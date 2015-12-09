@@ -169,6 +169,29 @@
   [self.panelView addSubview:slider];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    NSString *r = [NSString stringWithFormat:@"%@",[[NSString alloc] initWithFormat:@"%1x",254]];
+    NSString *g = [NSString stringWithFormat:@"%@",[[NSString alloc] initWithFormat:@"%1x",242]];
+    
+    NSString *b = [NSString stringWithFormat:@"%@",[[NSString alloc] initWithFormat:@"%1x",184]];
+    
+    [HttpRequest sendRGBColorToServer:self.logic_id redValue:r greenValue:g blueValue:b
+                              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                  
+                                  NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                                  NSLog(@"成功: %@", string);
+                                  
+                                  
+                              }
+                              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                  
+                                  NSLog(@"失败: %@", error);
+                                  [MBProgressHUD showError:@"请检查网关"];
+                                  
+                              }];
+}
 //控制RGB灯亮度方法
 -(void)sliderValueChanged
 {
