@@ -17,15 +17,14 @@
 //    
 //}
 
--(void)layoutSubviews{
+-(void)layoutSubviews
+{
     [super layoutSubviews];
-    
-//    NSLog(@"%@",self.subviews);
-    
-    for (UIImageView* imageView in self.subviews) {
-        if (imageView.frame.origin.x < self.center.x) {
-//            NSLog(@"%d", (int)self.center.x);
-//            NSLog(@"%@", imageView);
+    for (UIImageView* imageView in self.subviews)
+    {
+        if (imageView.frame.origin.x < self.center.x)
+        {
+
             imageView.contentMode = UIViewContentModeLeft;
         }
     }

@@ -314,7 +314,7 @@
           success:success
           failure:failure];
     
-    NSLog(@"使用内网控制RGB亮度：%@",[[NSString alloc] initWithFormat:@"http://%@/phone/yw_light.php",app.globalInternalIP]);
+//    NSLog(@"使用内网控制RGB亮度：%@",[[NSString alloc] initWithFormat:@"http://%@/phone/yw_light.php",app.globalInternalIP]);
     
     
   }else{
@@ -325,7 +325,7 @@
           success:success
           failure:failure];
     
-    NSLog(@"使用外网控制RGB亮度");
+   // NSLog(@"使用外网控制RGB亮度111");
     
   }
   

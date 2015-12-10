@@ -34,6 +34,8 @@
 
 @property(nonatomic,assign)int tag;
 @property(nonatomic,assign)int switchTag;
+@property(nonatomic,assign)int sliderTag;
+@property(nonatomic,assign)int sliderValueTemp;
 @end
 
 @implementation DLLampControlGuestModeViewController
@@ -107,11 +109,12 @@
   UIButton *btnPlay = [[UIButton alloc] init];
   
   ZQSlider *slider = [[ZQSlider alloc] init];
+    //UISlider *slider=[[UISlider alloc]init];
   slider.backgroundColor = [UIColor clearColor];
   
   slider.minimumValue = 0;
   slider.maximumValue = 100;
-  slider.value = 30;
+  slider.value = 0;
   
   [slider setMaximumTrackImage:[UIImage imageNamed:@"lightdarkslider3"] forState:UIControlStateNormal];
   [slider setMinimumTrackImage:[UIImage imageNamed:@"lightdarkslider3"] forState:UIControlStateNormal];
@@ -122,6 +125,7 @@
   
   self.slider = slider;
   [slider addTarget:self action:@selector(sliderValueChanged) forControlEvents:UIControlEventValueChanged];
+    [slider addTarget:self action:@selector(sliderTouchUpInside) forControlEvents:UIControlEventTouchUpInside];
   
   if (fabsf(([[UIScreen mainScreen] bounds].size.height - 568)) < 1){
     // 5 & 5s & 5c
@@ -195,10 +199,12 @@
 //控制RGB灯亮度方法
 -(void)sliderValueChanged
 {
-  NSLog(@"%f", self.slider.value);
-    int value = (int)self.slider.value;
-    if (value % 20 == 0) {
-
+  int value = (int)self.slider.value;
+   
+    if(fabsf(self.slider.value-self.sliderValueTemp)>5)
+    {
+         NSLog(@"哪个被发送请求的啊%d",value);
+        self.sliderValueTemp=self.slider.value;
         [HttpRequest sendRGBBrightnessToServer:self.logic_id brightnessValue:[NSString stringWithFormat:@"%f", self.slider.value]
                                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                            
@@ -209,9 +215,18 @@
                                            NSLog(@"失败: %@", error);
                                            [MBProgressHUD showError:@"请检查网关"];
                                        }];
-    }
-}
 
+    }
+ 
+    
+    
+ 
+}
+-(void)sliderTouchUpInside
+{
+    NSLog(@"还原");
+    self.sliderValueTemp=0;
+}
 /**
  *  判断点触位置，如果点触位置在颜色区域内的话，才返回点触的控件为UIImageView *imgView
  *  除此之外，点触位置落在小圆内部或者大圆外部，都返回nil
